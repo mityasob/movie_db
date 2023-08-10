@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1010px;
+  background-color: #FFF;
+}
+
+@media (max-width: 1010px) {
+  .header {
+    width: 100%;
+  }
+}

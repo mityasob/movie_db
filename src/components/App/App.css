@@ -1,0 +1,84 @@
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.movie-db {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  min-height: 300px;
+  background-color: #f7f7f7;
+}
+
+.ant-spin-dot.ant-spin-dot-spin {
+  width: 2em;
+  height: 2em;
+}
+
+.ant-pagination .ant-pagination-options {
+  display: none;
+}
+
+.spin-container {
+  background-color: #fff;
+  width: 1010px;
+  text-align: center;
+  padding: 1em 0;
+}
+
+.ant-alert {
+  width: 1010px;
+}
+
+@media (max-width: 1010px) {
+  .spin-container {
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 1em 0;
+  }
+
+  .ant-space {
+    width: 100vw;
+    padding: 17px;
+  }
+
+  .ant-alert {
+    width: 100%;
+  }
+}

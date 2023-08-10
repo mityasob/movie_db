@@ -1,0 +1,248 @@
+.frame {
+  width: 454px;
+  height: 281px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 0;
+  margin-bottom: 36px;
+  background: #ffffff;
+}
+
+.frame > .frame-img-container {
+  margin: 0 0 0 3px;
+  width: 183px;
+  height: 281px;
+  flex-shrink: 0;
+  background: lightgray 50% / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.frame .frame-img {
+  height: 279px;
+}
+
+.frame .frame-description-container {
+  position: relative;
+  width: 100%;
+  height: 281px;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.frame-description {
+  width: 100%;
+  height: 220px;
+  padding: 11px 9px 2px 20px;
+}
+
+.frame-description .frame-img-container {
+  display: none;
+}
+
+.frame .title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.frame .movie-title {
+  width: 200px;
+  color: #000;
+  font-family: Inter UI;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  margin: 0;
+}
+
+.vote-average {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #e9d100;
+  border-radius: 15px;
+  background-color: transparent;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: #000;
+  font-family: Inter UI;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.vote-average.red-rating {
+  border-color: #e90000;
+}
+
+.vote-average.orange-rating {
+  border-color: #e97e00;
+}
+
+.vote-average.yellow-rating {
+  border-color: #e9d100;
+}
+
+.vote-average.green-rating {
+  border-color: #66e900;
+}
+
+.frame .release-date {
+  color: #827e7e;
+  font-family: Inter UI;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  margin-top: 7px;
+}
+
+.frame .genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 7px;
+  padding-right: 11px;
+}
+
+.genre-list .genre {
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  padding: 2px 3px 4px 5px;
+  margin-right: 8px;
+  margin-bottom: 7px;
+  color: rgba(0, 0, 0, 0.65);
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.frame .movie-details {
+  height: 110px;
+  color: #000;
+  font-family: Inter UI;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  margin-bottom: 14px;
+  padding-right: 11px;
+}
+
+.rate-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ant-rate {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.ant-rate-star {
+  width: 14px;
+  margin-right: 5px;
+}
+
+.frame .ant-space {
+  position: absolute;
+  top: 208px;
+  z-index: 100;
+  width: 100%;
+}
+
+.frame .ant-alert {
+  padding: 10px 12px;
+  width: 100%;
+  font-size: 12px;
+}
+
+@media (max-width: 486px) {
+  .frame {
+    width: 92%;
+    min-width: 300px;
+    height: 245px;
+    margin-bottom: 20px;
+  }
+
+  .frame .frame-img-container {
+    display: none;
+  }
+
+  .frame-description .frame-img-container {
+    display: block;
+    float: left;
+    margin: 6px 13px 0 0;
+    width: 60px;
+    height: 91px;
+    flex-shrink: 0;
+    background: lightgray 50% / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .frame .frame-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .frame .frame-description-container {
+    height: 245px;
+  }
+
+  .frame-description {
+    width: 100%;
+    height: 199px;
+    padding: 4px 10px 0;
+  }
+
+  .frame .movie-title {
+    width: calc(100% - 39px);
+  }
+
+  .frame .genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-right: 0;
+  }
+
+  .genre-list .genre {
+    margin-bottom: 4px;
+    margin-right: 6px;
+  }
+
+  .frame .movie-details {
+    height: 92px;
+    padding-right: 0;
+  }
+
+  .rate-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .ant-rate {
+    margin-right: 10px;
+  }
+
+  .frame .ant-space {
+    position: absolute;
+    top: 172px;
+    padding: 0;
+    z-index: 100;
+    width: 100%;
+  }
+}

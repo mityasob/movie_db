@@ -1,0 +1,30 @@
+.tabs-panel {
+  display: flex;
+  justify-content: space-between;
+  width: 146px;
+  margin-top: 13px;
+  margin-bottom: 19px;
+  box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.09) inset;
+}
+
+.tab {
+  width: 65px;
+  padding-top: 19px;
+  padding-bottom: 12px;
+  background-color: #fff;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.65);
+  font-family: Inter UI;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.09) inset;
+}
+
+.tab:active, .tab:hover, .tab.selected {
+  padding-bottom: 10px;
+  border-bottom: 2px solid #1890FF;
+  color: #1890FF;
+  cursor: pointer;
+}
