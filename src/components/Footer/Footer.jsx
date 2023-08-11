@@ -1,15 +1,15 @@
-import React from "react";
-import { Pagination } from "antd";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Pagination } from 'antd';
+import PropTypes from 'prop-types';
 
-import "./Footer.css";
+import './Footer.css';
 
 class Footer extends React.Component {
   render() {
     if (this.props.tabs[0].selected) {
       if (this.props.movieArray.length) {
         return (
-          <footer className='footer'>
+          <footer className="footer">
             <Pagination
               defaultCurrent={1}
               current={this.props.tabs[0].selectedPageNumber}
@@ -22,7 +22,7 @@ class Footer extends React.Component {
       }
     } else {
       return (
-        <footer className='footer'>
+        <footer className="footer">
           <Pagination
             defaultCurrent={1}
             current={this.props.tabs[1].selectedPageNumber}

@@ -1,10 +1,11 @@
-import React from "react";
-import { Rate, Space, Alert } from "antd";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Rate, Space, Alert } from 'antd';
+import PropTypes from 'prop-types';
 
-import "./Frame.css";
-import image from "./Rectangle 36.png";
-import { Consumer } from "../GenreContext";
+import { Consumer } from '../GenreContext';
+
+import './Frame.css';
+import image from './Rectangle 36.png';
 
 class Frame extends React.Component {
   constructor(props) {
@@ -12,15 +13,43 @@ class Frame extends React.Component {
 
     this.state = {
       rateSuccess: true,
+      rating: this.props.rating,
+    };
+
+    this.textSize = (text) => {
+      const textArray = text.split(' ');
+      let lineNumber = 1;
+      textArray.reduce((sum, element) => {
+        if (sum + element.length + 3 > 20) {
+          lineNumber++;
+          return 0;
+        }
+        return sum + element.length + 1;
+      }, 0);
+      const lineHeight = lineNumber * 28;
+      return lineHeight;
+    };
+
+    this.genreBoxSize = (genres) => {
+      let lineNumber = 1;
+      genres.reduce((sum, element) => {
+        if (sum + element.props.children.length + 6 > 45) {
+          lineNumber++;
+          return 0;
+        }
+        return sum + element.props.children.length + 3;
+      }, 0);
+      const lineHeight = lineNumber * 37;
+      return lineHeight;
     };
   }
 
   changeValue = (value) => {
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        accept: "application/json",
-        "Content-Type": "application/json;charset=utf-8",
+        accept: 'application/json',
+        'Content-Type': 'application/json;charset=utf-8',
       },
       body: `{"value":${value}}`,
     };
@@ -31,9 +60,11 @@ class Frame extends React.Component {
     )
       .then((response) => response.json())
       .then((response) => {
-        this.setState({
-          rateSuccess: response.success,
-        });
+        if (response.success) {
+          this.setState({
+            rating: value,
+          });
+        }
       })
       .catch(() => {
         this.setState({
@@ -42,35 +73,6 @@ class Frame extends React.Component {
       });
   };
 
-  textSize = (text) => {
-    const textArray = text.split(" ");
-    let lineNumber = 1;
-    textArray.reduce((sum, element) => {
-      if (sum + element.length + 3 > 20) {
-        lineNumber++;
-        return 0;
-      } else {
-        return sum + element.length + 1;
-      }
-    }, 0);
-    let lineHeight = lineNumber * 28;
-    return lineHeight;
-  };
-
-  genreBoxSize(genres) {
-    let lineNumber = 1;
-    genres.reduce((sum, element) => {
-      if (sum + element.props.children.length + 6 > 45) {
-        lineNumber++;
-        return 0;
-      } else {
-        return sum + element.props.children.length + 3;
-      }
-    }, 0);
-    let lineHeight = lineNumber * 37;
-    return lineHeight;
-  }
-
   cutOverview = (title, genres, overview) => {
     const titleSize = this.textSize(title);
     const dateSize = 29;
@@ -78,20 +80,19 @@ class Frame extends React.Component {
     const overviewSize = 220 - (titleSize + dateSize + genresSize);
     const overviewMaxLength = Math.floor(overviewSize / 22) * 40;
     if (overview.length > overviewMaxLength) {
-      let shortOverview = overview.slice(0, overviewMaxLength);
+      const shortOverview = overview.slice(0, overviewMaxLength);
       let index;
       for (let i = shortOverview.length - 1; i >= 0; i--) {
         if (
           shortOverview.charCodeAt(i) < 48 ||
-          (shortOverview.charCodeAt(i) > 57 &&
-            shortOverview.charCodeAt(i) < 65) ||
+          (shortOverview.charCodeAt(i) > 57 && shortOverview.charCodeAt(i) < 65) ||
           shortOverview.charCodeAt(i) > 122
         ) {
           index = i;
           break;
         }
       }
-      overview = shortOverview.slice(0, index) + " ...";
+      overview = `${shortOverview.slice(0, index)} ...`;
     }
     return overview;
   };
@@ -103,75 +104,64 @@ class Frame extends React.Component {
   };
 
   render() {
-    const {
-      poster,
-      voteAverage,
-      title,
-      releaseDate,
-      genreIds,
-      overview,
-      rating,
-    } = this.props;
-    const posterUrl = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+    const { poster, voteAverage, title, releaseDate, genreIds, overview } = this.props;
+    const posterUrl = 'https://www.themoviedb.org/t/p/w220_and_h330_face';
     const getPoster = poster ? posterUrl + poster : image;
     const color = () => {
       if (voteAverage <= 3) {
-        return "red-rating";
-      } else if (voteAverage <= 5) {
-        return "orange-rating";
-      } else if (voteAverage <= 7) {
-        return "yellow-rating";
-      } else {
-        return "green-rating";
+        return 'red-rating';
       }
+      if (voteAverage <= 5) {
+        return 'orange-rating';
+      }
+      if (voteAverage <= 7) {
+        return 'yellow-rating';
+      }
+      return 'green-rating';
     };
 
     return (
-      <div className='frame'>
-        <figure className='frame-img-container'>
-          <img src={getPoster} className='frame-img' alt='Movie Poster' />
+      <div className="frame">
+        <figure className="frame-img-container">
+          <img src={getPoster} className="frame-img" alt="Movie Poster" />
         </figure>
-        <div className='frame-description-container'>
-          <div className='frame-description'>
-            <figure className='frame-img-container'>
-              <img src={getPoster} className='frame-img' alt='Movie Poster' />
+        <div className="frame-description-container">
+          <div className="frame-description">
+            <figure className="frame-img-container">
+              <img src={getPoster} className="frame-img" alt="Movie Poster" />
             </figure>
-            <div className='title-container'>
-              <h5 className='movie-title'>{title}</h5>
+            <div className="title-container">
+              <h5 className="movie-title">{title}</h5>
               <div className={`vote-average ${color()}`}>
                 <span>{Math.round(voteAverage * 10) / 10}</span>
               </div>
             </div>
-            <div className='release-date'>
-              <span>{releaseDate ? releaseDate : "NA"}</span>
+            <div className="release-date">
+              <span>{releaseDate || 'NA'}</span>
             </div>
             <Consumer>
               {(genreList) => {
                 const genreNames = [];
                 genreIds.forEach((element) => {
-                  const genreName = genreList.find(
-                    (item) => item.id === element
-                  );
+                  const genreName = genreList.find((item) => item.id === element);
                   genreNames.push(
-                    <span key={genreName.id} className='genre'>
+                    <span key={genreName.id} className="genre">
                       {genreName.name}
                     </span>
                   );
                 });
                 if (!genreNames.length) {
                   genreNames.push(
-                    <span key={"NA"} className='genre'>
+                    <span key={'NA'} className="genre">
                       NA
                     </span>
                   );
                 }
                 return (
                   <div>
-                    <div className='genre-list'>{genreNames}</div>
-                    <div className='movie-details'>
-                      <span>
-                        {this.cutOverview(title, genreNames, overview)}
-                      </span>
+                    <div className="genre-list">{genreNames}</div>
+                    <div className="movie-details">
+                      <span>{this.cutOverview(title, genreNames, overview)}</span>
                     </div>
                   </div>
                 );
@@ -179,24 +169,17 @@ class Frame extends React.Component {
             </Consumer>
           </div>
           {!this.state.rateSuccess && (
-            <Space direction='vertical'>
+            <Space direction="vertical">
               <Alert
-                message='Request Error'
-                description='Try to rate movie again.'
-                type='error'
+                message="Request Error"
+                description="Try to rate movie again."
+                type="error"
                 closable
                 onClose={this.onClose}
               />
             </Space>
           )}
-          <div className='rate-container'>
-            <Rate
-              allowHalf
-              count={10}
-              onChange={this.changeValue}
-              value={rating}
-            />
-          </div>
+          <Rate allowHalf count={10} onChange={this.changeValue} value={this.state.rating} />
         </div>
       </div>
     );
@@ -205,13 +188,13 @@ class Frame extends React.Component {
 
 Frame.defaultProps = {
   id: null,
-  guestSession: "",
-  poster: "",
+  guestSession: '',
+  poster: '',
   voteAverage: null,
-  title: "",
-  releaseDate: {},
-  genreIds: null,
-  overview: "",
+  title: '',
+  releaseDate: '',
+  genreIds: {},
+  overview: '',
   rating: null,
 };
 Frame.propTypes = {
@@ -220,8 +203,8 @@ Frame.propTypes = {
   poster: PropTypes.string,
   voteAverage: PropTypes.number,
   title: PropTypes.string,
-  releaseDate: PropTypes.object,
-  genreIds: PropTypes.string,
+  releaseDate: PropTypes.string,
+  genreIds: PropTypes.array,
   overview: PropTypes.string,
   rating: PropTypes.number,
 };

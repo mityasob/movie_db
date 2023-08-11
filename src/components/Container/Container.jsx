@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import Frame from "../Frame";
-import "./Container.css";
+import Frame from '../Frame';
+import './Container.css';
 
 class Container extends React.Component {
   render() {
@@ -43,19 +43,19 @@ class Container extends React.Component {
     });
     const movieList = tabs[0].selected ? movieFrames : ratedMoviFrames;
 
-    return <section className='container'>{movieList}</section>;
+    return <section className="container">{movieList}</section>;
   }
 }
 
 Container.defaultProps = {
   movieArray: {},
-  ratedMovieArray: {}, 
+  ratedMovieArray: {},
   tabs: {},
-  guestSession: "",
+  guestSession: '',
 };
 Container.propTypes = {
   movieArray: PropTypes.arrayOf(PropTypes.object),
-  ratedMovieArray: PropTypes.arrayOf(PropTypes.object), 
+  ratedMovieArray: PropTypes.arrayOf(PropTypes.object),
   tabs: PropTypes.arrayOf(PropTypes.object),
   guestSession: PropTypes.string,
 };

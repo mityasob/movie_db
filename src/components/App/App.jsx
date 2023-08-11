@@ -1,13 +1,13 @@
-import React from "react";
-import { Spin } from "antd";
-import { Alert, Space } from "antd";
-import { debounce } from "lodash";
+import React from 'react';
+import { Spin } from 'antd';
+import { Alert, Space } from 'antd';
+import { debounce } from 'lodash';
 
-import Container from "../Container";
-import Header from "../Header";
-import Footer from "../Footer";
-import "./App.css";
-import { Provider } from "../GenreContext";
+import Container from '../Container';
+import Header from '../Header';
+import Footer from '../Footer';
+import './App.css';
+import { Provider } from '../GenreContext';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,39 +19,52 @@ class App extends React.Component {
       ratedMoviePages: null,
       isLoaded: true,
       error: false,
-      inputValue: "",
+      inputValue: '',
       tabs: [
         {
           id: 1,
-          class: "tab selected",
-          value: "Search",
+          class: 'tab selected',
+          value: 'Search',
           selectedPageNumber: 1,
           selected: true,
         },
         {
           id: 2,
-          class: "tab",
-          value: "Rated",
+          class: 'tab',
+          value: 'Rated',
           selectedPageNumber: 1,
           selected: false,
         },
       ],
-      guestSession: "",
+      guestSession: '',
       genreList: [],
     };
 
     this.options = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        accept: "application/json",
+        accept: 'application/json',
       },
+    };
+
+    this.createCard = (movie) => {
+      return {
+        id: movie.id,
+        title: movie.title,
+        releaseDate: movie.release_date,
+        overview: movie.overview,
+        poster: movie.poster_path,
+        voteAverage: movie.vote_average,
+        rating: movie.rating,
+        genreIds: movie.genre_ids,
+      };
     };
   }
 
   componentDidMount() {
     this.getGenreList();
     fetch(
-      "https://api.themoviedb.org/3/authentication/guest_session/new?api_key=ee60b68613c90cbd5be3c6ec998aa678",
+      'https://api.themoviedb.org/3/authentication/guest_session/new?api_key=ee60b68613c90cbd5be3c6ec998aa678',
       this.options
     )
       .then((response) => response.json())
@@ -72,10 +85,10 @@ class App extends React.Component {
     const newTabs = this.state.tabs.slice();
     newTabs.forEach((element) => {
       if (element.value === event.target.innerHTML) {
-        element.class = "tab selected";
+        element.class = 'tab selected';
         element.selected = true;
       } else {
-        element.class = "tab";
+        element.class = 'tab';
         element.selected = false;
       }
     });
@@ -84,26 +97,13 @@ class App extends React.Component {
     });
   };
 
-  createCard = (movie) => {
-    return {
-      id: movie.id,
-      title: movie.title,
-      releaseDate: movie.release_date,
-      overview: movie.overview,
-      poster: movie.poster_path,
-      voteAverage: movie.vote_average,
-      rating: movie.rating,
-      genreIds: movie.genre_ids,
-    };
-  };
-
   changeInputValue = (event) => {
     this.setState({
-      inputValue: event.target.value === " " ? "" : event.target.value,
+      inputValue: event.target.value === ' ' ? '' : event.target.value,
     });
   };
 
-  getMovies = (value = "return") => {
+  getMovies = (value = 'return') => {
     if (this.state.guestSession) {
       this.getRatedList();
     }
@@ -115,9 +115,7 @@ class App extends React.Component {
       .then((response) => {
         const newMovieArray = [];
         for (let i = 0; i < response.results.length; i++) {
-          const movieId = this.state.ratedMovieArray.find(
-            (element) => element.id === response.results[i].id
-          );
+          const movieId = this.state.ratedMovieArray.find((element) => element.id === response.results[i].id);
           if (movieId) {
             newMovieArray.push(movieId);
           } else {
@@ -162,10 +160,8 @@ class App extends React.Component {
   componentDidUpdate = debounce((prevProps, prevState) => {
     if (
       this.state.inputValue !== prevState.inputValue ||
-      this.state.tabs[0].selectedPageNumber !==
-        prevState.tabs[0].selectedPageNumber ||
-      this.state.tabs[1].selectedPageNumber !==
-        prevState.tabs[1].selectedPageNumber ||
+      this.state.tabs[0].selectedPageNumber !== prevState.tabs[0].selectedPageNumber ||
+      this.state.tabs[1].selectedPageNumber !== prevState.tabs[1].selectedPageNumber ||
       this.state.tabs[0].selected !== prevState.tabs[0].selected
     ) {
       this.setState({
@@ -178,7 +174,7 @@ class App extends React.Component {
   onClose = () => {
     this.setState({
       error: false,
-      inputValue: "",
+      inputValue: '',
     });
   };
 
@@ -198,7 +194,7 @@ class App extends React.Component {
 
   getGenreList = () => {
     fetch(
-      "https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=ee60b68613c90cbd5be3c6ec998aa678",
+      'https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=ee60b68613c90cbd5be3c6ec998aa678',
       this.options
     )
       .then((response) => response.json())
@@ -220,13 +216,13 @@ class App extends React.Component {
     if (rest.error) {
       return (
         <Provider value={rest.genreList}>
-          <section className='movie-db'>
+          <section className="movie-db">
             <Header tabs={rest.tabs} selectTab={this.selectTab} />
-            <Space direction='vertical'>
+            <Space direction="vertical">
               <Alert
-                message='Request Error'
-                description='Close window and start new search or refresh window'
-                type='error'
+                message="Request Error"
+                description="Close window and start new search or refresh window"
+                type="error"
                 closable
                 onClose={this.onClose}
               />
@@ -234,12 +230,13 @@ class App extends React.Component {
           </section>
         </Provider>
       );
-    } else if (!rest.isLoaded) {
+    }
+    if (!rest.isLoaded) {
       return (
         <Provider value={rest.genreList}>
-          <section className='movie-db'>
+          <section className="movie-db">
             <Header tabs={rest.tabs} selectTab={this.selectTab} />
-            <div className='spin-container'>
+            <div className="spin-container">
               <Spin />
             </div>
             <Footer
@@ -253,34 +250,33 @@ class App extends React.Component {
           </section>
         </Provider>
       );
-    } else {
-      return (
-        <Provider value={rest.genreList}>
-          <section className='movie-db'>
-            <Header
-              tabs={rest.tabs}
-              inputValue={rest.inputValue}
-              changeInputValue={this.changeInputValue}
-              selectTab={this.selectTab}
-            />
-            <Container
-              movieArray={rest.movieArray}
-              ratedMovieArray={rest.ratedMovieArray}
-              tabs={rest.tabs}
-              guestSession={rest.guestSession}
-            />
-            <Footer
-              tabs={rest.tabs}
-              changePage={this.changePage}
-              movieArray={rest.movieArray}
-              moviePages={rest.moviePages}
-              ratedMovieArray={rest.ratedMovieArray}
-              ratedMoviePages={rest.ratedMoviePages}
-            />
-          </section>
-        </Provider>
-      );
     }
+    return (
+      <Provider value={rest.genreList}>
+        <section className="movie-db">
+          <Header
+            tabs={rest.tabs}
+            inputValue={rest.inputValue}
+            changeInputValue={this.changeInputValue}
+            selectTab={this.selectTab}
+          />
+          <Container
+            movieArray={rest.movieArray}
+            ratedMovieArray={rest.ratedMovieArray}
+            tabs={rest.tabs}
+            guestSession={rest.guestSession}
+          />
+          <Footer
+            tabs={rest.tabs}
+            changePage={this.changePage}
+            movieArray={rest.movieArray}
+            moviePages={rest.moviePages}
+            ratedMovieArray={rest.ratedMovieArray}
+            ratedMoviePages={rest.ratedMoviePages}
+          />
+        </section>
+      </Provider>
+    );
   }
 }
 

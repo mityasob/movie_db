@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import "./SearchPanel.css";
+import './SearchPanel.css';
 
 class SearchPanel extends React.Component {
   render() {
     return (
-      <div className='search-panel'>
+      <div className="search-panel">
         <input
-          type='search'
-          className='search-input'
-          placeholder='Type to search...'
+          type="search"
+          className="search-input"
+          placeholder="Type to search..."
           autoFocus
           onChange={this.props.changeInputValue}
         />
