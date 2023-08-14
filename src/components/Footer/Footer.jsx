@@ -6,28 +6,14 @@ import './Footer.css';
 
 class Footer extends React.Component {
   render() {
-    if (this.props.tabs[0].selected) {
-      if (this.props.movieArray.length) {
-        return (
-          <footer className="footer">
-            <Pagination
-              defaultCurrent={1}
-              current={this.props.tabs[0].selectedPageNumber}
-              pageSize={1}
-              total={this.props.moviePages}
-              onChange={this.props.changePage}
-            />
-          </footer>
-        );
-      }
-    } else {
+    if (this.props.tabs[0].selected && this.props.movieArray.length) {
       return (
         <footer className="footer">
           <Pagination
             defaultCurrent={1}
-            current={this.props.tabs[1].selectedPageNumber}
+            current={this.props.tabs[0].selectedPageNumber}
             pageSize={1}
-            total={this.props.ratedMoviePages}
+            total={this.props.moviePages}
             onChange={this.props.changePage}
           />
         </footer>

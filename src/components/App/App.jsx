@@ -1,13 +1,12 @@
 import React from 'react';
-import { Spin } from 'antd';
-import { Alert, Space } from 'antd';
+import { Spin, Alert, Space } from 'antd';
 import { debounce } from 'lodash';
 
 import Container from '../Container';
 import Header from '../Header';
 import Footer from '../Footer';
 import './App.css';
-import { Provider } from '../GenreContext';
+import { Provider } from '../../context/GenreContext';
 
 class App extends React.Component {
   constructor(props) {
@@ -212,45 +211,42 @@ class App extends React.Component {
 
   render() {
     const { ...rest } = this.state;
+    const space = rest.error ? (
+      <Space direction="vertical">
+        <Alert
+          message="Request Error"
+          description="Close window and start new search or refresh window"
+          type="error"
+          closable
+          onClose={this.onClose}
+        />
+      </Space>
+    ) : null;
+    const spin = !rest.isLoaded ? (
+      <div className="spin-container">
+        <Spin />
+      </div>
+    ) : null;
+    const container =
+      !rest.error && rest.isLoaded ? (
+        <Container
+          movieArray={rest.movieArray}
+          ratedMovieArray={rest.ratedMovieArray}
+          tabs={rest.tabs}
+          guestSession={rest.guestSession}
+        />
+      ) : null;
+    const footer = !rest.error ? (
+      <Footer
+        tabs={rest.tabs}
+        changePage={this.changePage}
+        movieArray={rest.movieArray}
+        moviePages={rest.moviePages}
+        ratedMovieArray={rest.ratedMovieArray}
+        ratedMoviePages={rest.ratedMoviePages}
+      />
+    ) : null;
 
-    if (rest.error) {
-      return (
-        <Provider value={rest.genreList}>
-          <section className="movie-db">
-            <Header tabs={rest.tabs} selectTab={this.selectTab} />
-            <Space direction="vertical">
-              <Alert
-                message="Request Error"
-                description="Close window and start new search or refresh window"
-                type="error"
-                closable
-                onClose={this.onClose}
-              />
-            </Space>
-          </section>
-        </Provider>
-      );
-    }
-    if (!rest.isLoaded) {
-      return (
-        <Provider value={rest.genreList}>
-          <section className="movie-db">
-            <Header tabs={rest.tabs} selectTab={this.selectTab} />
-            <div className="spin-container">
-              <Spin />
-            </div>
-            <Footer
-              tabs={rest.tabs}
-              changePage={this.changePage}
-              movieArray={rest.movieArray}
-              moviePages={rest.moviePages}
-              ratedMovieArray={rest.ratedMovieArray}
-              ratedMoviePages={rest.ratedMoviePages}
-            />
-          </section>
-        </Provider>
-      );
-    }
     return (
       <Provider value={rest.genreList}>
         <section className="movie-db">
@@ -260,20 +256,10 @@ class App extends React.Component {
             changeInputValue={this.changeInputValue}
             selectTab={this.selectTab}
           />
-          <Container
-            movieArray={rest.movieArray}
-            ratedMovieArray={rest.ratedMovieArray}
-            tabs={rest.tabs}
-            guestSession={rest.guestSession}
-          />
-          <Footer
-            tabs={rest.tabs}
-            changePage={this.changePage}
-            movieArray={rest.movieArray}
-            moviePages={rest.moviePages}
-            ratedMovieArray={rest.ratedMovieArray}
-            ratedMoviePages={rest.ratedMoviePages}
-          />
+          {spin}
+          {space}
+          {container}
+          {footer}
         </section>
       </Provider>
     );

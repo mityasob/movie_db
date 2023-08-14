@@ -2,10 +2,9 @@ import React from 'react';
 import { Rate, Space, Alert } from 'antd';
 import PropTypes from 'prop-types';
 
-import { Consumer } from '../GenreContext';
-
+import { Consumer } from '../../context/GenreContext';
 import './Frame.css';
-import image from './Rectangle 36.png';
+import image from '../../assets/images/Rectangle 36.png';
 
 class Frame extends React.Component {
   constructor(props) {
@@ -19,28 +18,34 @@ class Frame extends React.Component {
     this.textSize = (text) => {
       const textArray = text.split(' ');
       let lineNumber = 1;
+      const space = 3;
+      const lineCapacity = 20;
       textArray.reduce((sum, element) => {
-        if (sum + element.length + 3 > 20) {
+        if (sum + element.length + space > lineCapacity) {
           lineNumber++;
           return 0;
         }
         return sum + element.length + 1;
       }, 0);
-      const lineHeight = lineNumber * 28;
-      return lineHeight;
+      const lineHeight = 28;
+      const textHeight = lineNumber * lineHeight;
+      return textHeight;
     };
 
     this.genreBoxSize = (genres) => {
       let lineNumber = 1;
+      const space = 6;
+      const lineCapacity = 45;
       genres.reduce((sum, element) => {
-        if (sum + element.props.children.length + 6 > 45) {
+        if (sum + element.props.children.length + space > lineCapacity) {
           lineNumber++;
           return 0;
         }
         return sum + element.props.children.length + 3;
       }, 0);
-      const lineHeight = lineNumber * 37;
-      return lineHeight;
+      const lineHeight = 37;
+      const boxHeight = lineNumber * lineHeight;
+      return boxHeight;
     };
   }
 
@@ -77,17 +82,17 @@ class Frame extends React.Component {
     const titleSize = this.textSize(title);
     const dateSize = 29;
     const genresSize = this.genreBoxSize(genres);
-    const overviewSize = 220 - (titleSize + dateSize + genresSize);
-    const overviewMaxLength = Math.floor(overviewSize / 22) * 40;
+    const boxHeight = 220;
+    const overviewSize = boxHeight - (titleSize + dateSize + genresSize);
+    const lineHeight = 22;
+    const lineCapacity = 40;
+    const overviewMaxLength = Math.floor(overviewSize / lineHeight) * lineCapacity;
     if (overview.length > overviewMaxLength) {
       const shortOverview = overview.slice(0, overviewMaxLength);
       let index;
       for (let i = shortOverview.length - 1; i >= 0; i--) {
-        if (
-          shortOverview.charCodeAt(i) < 48 ||
-          (shortOverview.charCodeAt(i) > 57 && shortOverview.charCodeAt(i) < 65) ||
-          shortOverview.charCodeAt(i) > 122
-        ) {
+        const noLetterChar = shortOverview.charCodeAt(i);
+        if (noLetterChar < 48 || (noLetterChar > 57 && noLetterChar < 65) || noLetterChar > 122) {
           index = i;
           break;
         }
@@ -119,6 +124,25 @@ class Frame extends React.Component {
       }
       return 'green-rating';
     };
+    const getGenres = (list) => {
+      const genreNames = [];
+      genreIds.forEach((element) => {
+        const genreName = list.find((item) => item.id === element);
+        genreNames.push(
+          <span key={genreName.id} className="genre">
+            {genreName.name}
+          </span>
+        );
+      });
+      if (!genreNames.length) {
+        genreNames.push(
+          <span key={'NA'} className="genre">
+            NA
+          </span>
+        );
+      }
+      return genreNames;
+    };
 
     return (
       <div className="frame">
@@ -140,32 +164,14 @@ class Frame extends React.Component {
               <span>{releaseDate || 'NA'}</span>
             </div>
             <Consumer>
-              {(genreList) => {
-                const genreNames = [];
-                genreIds.forEach((element) => {
-                  const genreName = genreList.find((item) => item.id === element);
-                  genreNames.push(
-                    <span key={genreName.id} className="genre">
-                      {genreName.name}
-                    </span>
-                  );
-                });
-                if (!genreNames.length) {
-                  genreNames.push(
-                    <span key={'NA'} className="genre">
-                      NA
-                    </span>
-                  );
-                }
-                return (
-                  <div>
-                    <div className="genre-list">{genreNames}</div>
-                    <div className="movie-details">
-                      <span>{this.cutOverview(title, genreNames, overview)}</span>
-                    </div>
+              {(genreList) => (
+                <div>
+                  <div className="genre-list">{getGenres(genreList)}</div>
+                  <div className="movie-details">
+                    <span>{this.cutOverview(title, getGenres(genreList), overview)}</span>
                   </div>
-                );
-              }}
+                </div>
+              )}
             </Consumer>
           </div>
           {!this.state.rateSuccess && (
