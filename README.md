@@ -1,1 +1,1 @@
-https://movie-db-umber.vercel.app/
+https://movie-db-mityasob.vercel.app/
